@@ -1,6 +1,7 @@
 import sys
 import urllib2
 import json
+import time
 
 import xbmcgui
 import xbmcplugin
@@ -31,6 +32,26 @@ def play():
 	xbmcplugin.setResolvedUrl(_handle, True, listitem=play_item)
 
 
+def play2():
+	request = urllib2.Request('',  )
+
+	response = urllib2.urlopen(request)
+
+	data = json.load(response)
+	print data
+
+	token = data['token']
+
+	play_item = xbmcgui.ListItem(path='https://rtl.y5.hu/videos/rtlhu/usp/mb_sd3/e/1/f/A-mi-kis-falunk_c11903173_A-mi-kis-falunk-2-e/A-mi-kis-falunk_c11903173_A-mi-kis-falunk-2-e_drmnp.ism/Manifest.mpd|X-DevTools-Emulate-Network-Conditions-Client-Id=ad3ac04d-00de-4e09-81eb-1fe2e4d0030d&X-DevTools-Request-Id=7128.1546')
+	play_item.setProperty('inputstream.adaptive.license_type', 'com.widevine.alpha')
+	play_item.setProperty('inputstream.adaptive.license_key', 'https://lic.drmtoday.com/license-proxy-widevine/cenc/|Content-Type=&User-Agent=Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3041.0 Safari/537.36&Referer=https://www.rtlmost.hu/a-mi-kis-falunk-p_7688/a-mi-kis-falunk-2-evad-6-resz-c_11903173&Host=lic.drmtoday.com&x-dt-auth-token=' + token + '|R{SSM}|JBlicense')
+	play_item.setProperty('inputstream.adaptive.manifest_type', 'mpd')
+	play_item.setProperty('inputstreamaddon', 'inputstream.adaptive')
+	play_item.setMimeType('application/dash+xml')
+	play_item.setContentLookup(False)
+
+	xbmcplugin.setResolvedUrl(_handle, True, listitem=play_item)
+
 if __name__ == '__main__':
     # Call the router function and pass the plugin call parameters to it.
     # We use string slicing to trim the leading '?' from the plugin call paramstring
@@ -38,6 +59,8 @@ if __name__ == '__main__':
 	params = dict(parse_qsl(sys.argv[2][1:]))
 	if params and params['action'] == 'play':
 		play()
+	elif params and params['action'] == 'play2':
+		play2()
 	else:
 		xbmcplugin.setPluginCategory(_handle, 'Samples')
 		xbmcplugin.setContent(_handle, 'videos')
@@ -45,4 +68,10 @@ if __name__ == '__main__':
 		list_item.setProperty('IsPlayable', 'true')
 		list_item.setInfo('video', {'mediatype': 'video'})
 		xbmcplugin.addDirectoryItem(_handle, _url + '?action=play', list_item, False)
+
+		list_item = xbmcgui.ListItem(label='Most')
+		list_item.setProperty('IsPlayable', 'true')
+		list_item.setInfo('video', {'mediatype': 'video'})
+		xbmcplugin.addDirectoryItem(_handle, _url + '?action=play2', list_item, False)
+
 		xbmcplugin.endOfDirectory(_handle)
