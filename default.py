@@ -56,6 +56,7 @@ def checkDrm():
 	from MediaDrm import MediaDrm
 	mediaDrm = MediaDrm()
 	mediaDrm.openSession()
+	mediaDrm.getKeyRequest(bytes([10, 122, 0, 108, 56, 43]))
 	mediaDrm.closeSession()
 
 if __name__ == '__main__':
