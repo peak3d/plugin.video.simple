@@ -52,6 +52,12 @@ def play2():
 
 	xbmcplugin.setResolvedUrl(_handle, True, listitem=play_item)
 
+def checkDrm():
+	from MediaDrm import MediaDrm
+	mediaDrm = MediaDrm()
+	mediaDrm.openSession()
+	mediaDrm.closeSession()
+
 if __name__ == '__main__':
     # Call the router function and pass the plugin call parameters to it.
     # We use string slicing to trim the leading '?' from the plugin call paramstring
@@ -61,6 +67,8 @@ if __name__ == '__main__':
 		play()
 	elif params and params['action'] == 'play2':
 		play2()
+	elif params and params['action'] == 'checkDrm':
+		checkDrm()
 	else:
 		xbmcplugin.setPluginCategory(_handle, 'Samples')
 		xbmcplugin.setContent(_handle, 'videos')
@@ -73,5 +81,10 @@ if __name__ == '__main__':
 		list_item.setProperty('IsPlayable', 'true')
 		list_item.setInfo('video', {'mediatype': 'video'})
 		xbmcplugin.addDirectoryItem(_handle, _url + '?action=play2', list_item, False)
+
+                list_item = xbmcgui.ListItem(label='MediaDrm')
+                list_item.setProperty('IsPlayable', 'false')
+                list_item.setInfo('video', {'mediatype': 'video'})
+                xbmcplugin.addDirectoryItem(_handle, _url + '?action=checkDrm', list_item, False)
 
 		xbmcplugin.endOfDirectory(_handle)
