@@ -43,6 +43,9 @@ class MediaDrm:
 		self.sessionStatus = AMediaDrm_getPropertyString(self.mediaDrm, 'systemId', byref(self.systemId))
 		print 'MediaDrm systemId:' + self.systemId.value
 
+	def getSystemId(self):
+		return self.systemId.value
+
 	def openSession(self):
 		if self.sessionStatus != 0:
 			return False
