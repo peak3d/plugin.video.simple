@@ -59,8 +59,18 @@ def play2():
 
 
 def play3():
-  cookie=''
-  request = urllib2.Request('https://www.filmfriend.de/findet-dorie-online-stream.html', headers={'Accept-Encoding':'gzip, deflate, br', 'Cookie':cookie})
+  cookie='[FILL ME]'
+
+  headers={
+    'Accept-Encoding':'gzip, deflate, br',
+    'Cookie':cookie,
+    'Cache-Control':'no-cache',
+    'Pragma':'no-cache',
+    'X-Requested-With':'XMLHttpRequest',
+    'User-Agent':'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.181 Safari/537.36'
+  }
+
+  request = urllib2.Request('https://www.filmfriend.de/findet-dorie-online-stream.html', headers=headers)
 
   response = urllib2.urlopen(request)
 
@@ -90,6 +100,7 @@ def play3():
   headers = 'authority=wv.service.expressplay.com'
   headers += '&referer=https://www.filmfriend.de/findet-dorie-online-stream.html'
   headers += '&origin=https://www.filmfriend.de'
+  headers += '&content-type=application/octet-stream'
 
   play_item = xbmcgui.ListItem(path='https://sddffilmfriend.akamaized.net/filmleihe/filme/findet_dorie/findet_dorie.mpd')
   play_item.setProperty('inputstream.adaptive.license_type', 'com.widevine.alpha')
